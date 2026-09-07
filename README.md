@@ -60,18 +60,14 @@ python manage.py run_huey
 ```
 
 Visit:
-- `/` — home page, log in / log out
+- `/` — authenticated home page (the `LOGIN_REDIRECT_URL` target)
 - `/admin/` — Django admin
 - `/auth/login/` — log in with Helix
 
 ## Tests
 
-```bash
-python manage.py test
-```
-
-Runs against `config.settings.test` is implied by `manage.py` picking up
-`DJANGO_SETTINGS_MODULE`; to force it explicitly:
+`manage.py` defaults `DJANGO_SETTINGS_MODULE` to `config.settings.development`,
+so the test settings must be selected explicitly:
 
 ```bash
 DJANGO_SETTINGS_MODULE=config.settings.test python manage.py test

@@ -82,7 +82,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LOGIN_URL = "authentication:login"
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "shared:home"
 LOGOUT_REDIRECT_URL = "authentication:login"
 
 LANGUAGE_CODE = "en-us"

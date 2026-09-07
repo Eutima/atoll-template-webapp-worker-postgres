@@ -5,6 +5,10 @@ from .base import INSTALLED_APPS, MIDDLEWARE
 
 DEBUG = False
 
+# No fallback: a production boot without a real secret must fail loudly rather
+# than silently run on base.py's shared insecure development key.
+SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+
 ALLOWED_HOSTS = [host.strip()
                  for host in os.environ["ALLOWED_HOSTS"].split(",") if host.strip()]
 CSRF_TRUSTED_ORIGINS = [host.strip()

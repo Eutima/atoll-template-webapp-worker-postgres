@@ -1,10 +1,18 @@
 from typing import Any
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Page, Paginator
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.template.response import TemplateResponse
 from django.views import View
+from django.views.generic import TemplateView
+
+
+class HomeView(LoginRequiredMixin, TemplateView):
+    """Authenticated landing page; the target of `LOGIN_REDIRECT_URL`."""
+
+    template_name = "shared/home.html"
 
 
 class HtmxTemplateMixin:

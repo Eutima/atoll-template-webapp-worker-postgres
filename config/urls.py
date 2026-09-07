@@ -9,6 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("metrics", metrics, name="metrics"),
     path("auth/", include("apps.authentication.urls")),
+    path("", include("apps.shared.urls")),
     path("", TemplateView.as_view(template_name="index.html"), name="index"),
 ]
 

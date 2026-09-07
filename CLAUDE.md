@@ -67,6 +67,8 @@ The user is a business specialist, not a developer. In all responses (not just f
 - **Every model gets a Django admin registration.** When adding a new `models/<name>.py`, add a matching `@admin.register(...)` `ModelAdmin` in that app's `admin.py` (see `apps/authentication/admin.py:UserProfileAdmin`) in the same change — don't leave new models unregistered.
 - **Every environment variable read by the code must be documented in `.env.example`.** Whenever you add or change an `os.environ[...]`/`os.environ.get(...)` call (or any other env var read, e.g. in `docker-compose*.yml`), add or update the matching key in `.env.example` with a safe placeholder/default value in the same change. Use the `env-example-sync` skill to check this.
 - **Kydo integration work always goes through the `kydo-api` skill.** Any Kydo client code, tests, or notes on Kydo API behavior belong under `.claude/skills/kydo-api/` (`SKILL.md`, `references/api-quirks.md`, `assets/kydo_client.py`, `assets/test_kydo_client_example.py`) — don't scatter Kydo-related files elsewhere in the repo. Read `references/api-quirks.md` before implementing or changing any Kydo endpoint call, and add newly discovered spec-vs-reality deviations there rather than only as inline code comments.
+- **Every change ships with tests.** New code gets tests that validate it; a bug fix gets a regression test that fails without the fix. Keep the suite green — it's the long-term stability guarantee. Conventions live in `.claude/rules/testing.md` (integration by default; unit only for `features/` and other non-Django code).
+- **Use the framework's tooling; don't hand-roll what a command generates.** Migrations come from `makemigrations` — hand-edit the generated file only for data migrations or operations the autodetector can't express, never write one from scratch. New apps come from `django-admin startapp`. Before calling a change done, run and clear `manage.py check` (dev + test) and `makemigrations --check --dry-run`.
 - **Never wipe the database.** No `flush`, no deleting `db.sqlite3`, no `migrate <app> zero`, no dropping/recreating tables to "start clean" — treat existing data (local or otherwise) as something to preserve. If a migration problem needs resolving, fix it forward instead.
 - **Never change a user's password.** Don't call `set_password`/`save()` on an existing `UserProfile`'s password, don't run `changepassword`, don't reset credentials — not even to debug a login issue.
 - **Restart the app when you're done.** After finishing a change, run/restart `python manage.py runserver` so the app is left running the latest code.
@@ -81,7 +83,8 @@ Everything lives under `config/` (project config) and `apps/` (domains). Within 
 ```
 apps/<domain>/
     models/<name>.py       QuerySet + Manager + Model, all three in the same file
-    services/<name>.py     one Service class: business logic, calls Managers/QuerySets/interfaces
+    features/<name>.py     pure-Python domain logic: no ORM, no Django/interfaces imports, no I/O; unit-tested
+    services/<name>.py     one Service class: business logic, calls Managers/QuerySets/interfaces/features
     views/<name>.py        HTTP concerns only (auth, response shaping); calls the Service, never touches the ORM directly
     serializers/<name>.py  request validation / response shaping
     filters/<name>.py      django_filters.FilterSet

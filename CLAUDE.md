@@ -60,6 +60,7 @@ The user is a business specialist, not a developer. In all responses (not just f
 
 ## Working conventions
 
+- **Code style lives in `.claude/rules/code-style.md`.** Naming, imports, `X | None` type hints, double quotes, the view/service/serializer split, and domain-exception error handling. Read it before writing Python here.
 - **Always enter plan mode for any prompt that isn't a question.** If the user's message is asking you to do something (implement, fix, refactor, add, remove, configure, etc.) rather than purely asking you to explain or answer something, enter plan mode before making any changes — even if the task seems small or the approach seems obvious. Only skip plan mode for genuine questions where no repo changes are being requested.
 - Initially ask the user if he wants to use `product-owner` mode, if yes **Run the `product-owner` skill first for feature requests.** For any non-question prompt that requests new or changed functionality, invoke the `product-owner` skill before/while entering plan mode to settle domain requirements through business-focused questions, and use its output as the basis for the plan.
 - **Don't build or run Docker unprompted.** `docker compose build`/`up` (dev or prod) is slow and noisy — only do it when the user explicitly asks to build, run, or test something in Docker. Local venv + `manage.py` is the default way to run and verify changes.

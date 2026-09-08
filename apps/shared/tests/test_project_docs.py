@@ -1,12 +1,13 @@
-import unittest
 from pathlib import Path
+
+from django.test import SimpleTestCase
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 RULES_DIR = REPO_ROOT / ".claude" / "rules"
 CLAUDE_MD = REPO_ROOT / "CLAUDE.md"
 
 
-class ClaudeMdLinksRulesTests(unittest.TestCase):
+class ClaudeMdLinksRulesTests(SimpleTestCase):
     def test_every_rules_file_is_referenced_in_claude_md(self) -> None:
         claude_md = CLAUDE_MD.read_text()
         rules_files = sorted(RULES_DIR.glob("*.md"))

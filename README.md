@@ -17,7 +17,7 @@ config/                  Django project configuration
 apps/
     shared/               base models, mixins, serializers, filters, views,
                           exceptions, middleware, external interfaces
-        interfaces/       code talking to external systems (e.g. smtp/)
+        interfaces/       code talking to external systems (e.g. helix/)
 
     authentication/       UserProfile domain (custom user model) — the
                           reference implementation of the domain pattern:
@@ -66,11 +66,11 @@ Visit:
 
 ## Tests
 
-`manage.py` defaults `DJANGO_SETTINGS_MODULE` to `config.settings.development`,
-so the test settings must be selected explicitly:
+Test config lives in `pytest.ini`, which pins `DJANGO_SETTINGS_MODULE` to
+`config.settings.test`:
 
 ```bash
-DJANGO_SETTINGS_MODULE=config.settings.test python manage.py test
+pytest
 ```
 
 ## Docker

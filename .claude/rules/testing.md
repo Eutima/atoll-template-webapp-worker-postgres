@@ -10,11 +10,12 @@ Detail for the testing rule in `CLAUDE.md`. These rules override defaults; follo
   business logic at the **service** layer: call the service, assert the DB result and that the right
   `apps/shared/exceptions.py` exception is raised. Test **views** only for HTTP concerns — status code,
   rendered/serialized shape, permissions, redirects — don't re-assert business rules through the view.
-- **Unit.** Pure Python with no Django involved — everything in `features/`, plus small standalone
-  helpers. Plain `unittest.TestCase`, no `django.test`, no DB. Keep these fast and dependency-free.
+- **Unit.** Pure Python with no Django involved — everything in `lib/`, plus small standalone
+  helpers. Subclass `django.test.SimpleTestCase` (no DB access, no fixtures). Keep these fast and
+  dependency-free.
 
-Everything in `features/` is unit-tested; if code under test needs the ORM, the client, settings, or an
-external call, it's integration. When a Service is thin orchestration over a well-tested `features/`
+Everything in `lib/` is unit-tested; if code under test needs the ORM, the client, settings, or an
+external call, it's integration. When a Service is thin orchestration over a well-tested `lib/`
 function, test the logic as a unit and give the Service one integration test for the
 fetch / call / persist path.
 
@@ -25,7 +26,7 @@ fetch / call / persist path.
   plus `test_managers`, `test_filters`, `test_permissions`, `test_serializers`, `test_views` as in
   `apps/authentication/tests/`).
 - `interfaces/<system>/` gets its own `tests/` next to the client (see
-  `apps/shared/interfaces/smtp/tests/`).
+  `apps/shared/interfaces/helix/tests/`).
 
 ## What to cover
 
@@ -46,5 +47,5 @@ fetch / call / persist path.
 ## Running
 
 ```bash
-DJANGO_SETTINGS_MODULE=config.settings.test python manage.py test
+pytest
 ```

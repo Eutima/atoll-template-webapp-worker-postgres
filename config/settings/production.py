@@ -36,8 +36,6 @@ HUEY = {
     "immediate": False,
 }
 
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
 # WhiteNoise serves compiled static assets directly from the app process in
 # production, right after SecurityMiddleware per WhiteNoise's own setup docs.
 MIDDLEWARE = [

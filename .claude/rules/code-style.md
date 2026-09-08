@@ -11,7 +11,7 @@ Match the surrounding code's idiom, naming, and comment density in any file you 
 
 ## Naming & file layout
 
-- One file per concern in a domain app (`models/`, `features/`, `services/`, `views/`, `serializers/`,
+- One file per concern in a domain app (`models/`, `lib/`, `services/`, `views/`, `serializers/`,
   `filters/`, `permissions/`, `tests/test_*`) — never one file per model or CRUD operation. See
   `CLAUDE.md` → Architecture; copy the shape of `apps/authentication/*/user_profile.py`.
 - A new `models/<name>.py` gets a matching `@admin.register(...)` in that app's `admin.py` in the
@@ -62,10 +62,10 @@ Many positional parameters is a smell — prefer keyword-only arguments or a par
 
 See `CLAUDE.md` → Architecture for the view / service / serializer / manager split. Beyond what it says:
 
-- **`features/` is the pure-Python layer.** Framework-agnostic domain logic — calculations, parsing,
-  rule evaluation, value objects. No `django.*` imports, no ORM, no I/O, no `interfaces/` calls. Takes
-  plain values / dataclasses in and out; the Service fetches via Managers or `interfaces/`, hands the
-  data to `features/`, then persists the result. Reach for it whenever a Service method grows logic
+- **`lib/` is the pure-Python layer.** Auxiliary framework-free classes and functions — calculations,
+  parsing, rule evaluation, value objects. No `django.*` imports, no ORM, no I/O, no `interfaces/` calls.
+  Takes plain values / dataclasses in and out; the Service fetches via Managers or `interfaces/`, hands
+  the data to `lib/`, then persists the result. Reach for it whenever a Service method grows logic
   that isn't itself a query or an external call. Unit-tested only.
 - **Repository pattern.** Every query lives as a named QuerySet / Manager method
   (`UserProfile.objects.active()`, `.with_email(email)`) — add one if it is missing. Services and views

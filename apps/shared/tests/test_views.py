@@ -9,16 +9,16 @@ from apps.shared.views import HtmxTemplateMixin, PaginatedListViewMixin
 
 class HomeViewTests(TestCase):
     def test_anonymous_is_redirected_to_login(self) -> None:
-        response = self.client.get(reverse("shared:home"))
+        response = self.client.get(reverse("home"))
         self.assertEqual(response.status_code, 302)
         self.assertIn(reverse("authentication:login"), response["Location"])
 
     def test_authenticated_user_sees_home(self) -> None:
         user = get_user_model().objects.create_user(email="home@example.com", password="password123")
         self.client.force_login(user)
-        response = self.client.get(reverse("shared:home"))
+        response = self.client.get(reverse("home"))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "shared/home.html")
+        self.assertTemplateUsed(response, "home.html")
 
 
 class MetricsViewTests(SimpleTestCase):
